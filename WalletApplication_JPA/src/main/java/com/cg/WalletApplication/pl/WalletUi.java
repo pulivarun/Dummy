@@ -1,9 +1,14 @@
 package com.cg.WalletApplication.pl;
 
 import java.math.BigDecimal;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.Scanner;
+import java.util.Set;
+
 import com.cg.WalletApplication.Exception.BankException;
 import com.cg.WalletApplication.bean.Customer;
+import com.cg.WalletApplication.bean.Transaction;
 import com.cg.WalletApplication.service.IWalletService;
 import com.cg.WalletApplication.service.WalletServiceImpl;
 
@@ -60,7 +65,7 @@ public class WalletUi {
 						Customer customer = iWalletService.showBalance(mobileNum, password);
 						if (customer != null) {
 							System.out.println("Available balance is " + customer.getWallet().getBalance());
-						} 
+						}
 					} catch (BankException bankException) {
 
 						System.out.println(bankException.getMessage());
@@ -80,7 +85,7 @@ public class WalletUi {
 							BigDecimal amount = scanner.nextBigDecimal();
 							iWalletService.deposit(customer, amount);
 							System.out.println("Deposited");
-						} 
+						}
 					} catch (BankException bankException) {
 
 						System.out.println(bankException.getMessage());
@@ -102,9 +107,9 @@ public class WalletUi {
 							boolean result = iWalletService.withDraw(customer, amount);
 							if (result == true) {
 								System.out.println("Amount is succesfully withdrawn and current balance is "
-										+ customer.getWallet().getBalance());	
+										+ customer.getWallet().getBalance());
 							}
-						} 
+						}
 					} catch (BankException bankException) {
 						System.out.println(bankException.getMessage());
 					}
@@ -128,12 +133,12 @@ public class WalletUi {
 								BigDecimal amount = scanner.nextBigDecimal();
 								boolean output = iWalletService.transfer(senderMobile, receiverMobile, amount);
 								if (output == true) {
-									System.out.println("Amount is succesfully transferred to "+receiverMobile+" and current balance is "
-											+ customer.getWallet().getBalance());
-								} 
+									System.out.println("Amount is succesfully transferred to " + receiverMobile
+											+ " and current balance is " + customer.getWallet().getBalance());
+								}
 
 							}
-						} 
+						}
 
 					} catch (BankException bankException) {
 						System.out.println(bankException.getMessage());
@@ -141,7 +146,7 @@ public class WalletUi {
 						System.out.println(interruptedException.getMessage());
 					}
 					break;
-			case 6:
+				case 6:
 					try {
 						System.out.println("Enter your mobile number");
 						String mobileNum = scanner.next();
@@ -151,15 +156,16 @@ public class WalletUi {
 						iWalletService.checkPassword(password);
 						Customer customer = iWalletService.check(mobileNum, password);
 						if (customer != null) {
-                              String mytransactions=iWalletService.printTransactions(customer);
-                             Scanner sc = new Scanner(mytransactions).useDelimiter(",");
-                             System.out.println("   Date       Time        Cr/Db    Amount");
-                             while(sc.hasNext())
-                             {
-                            	 System.out.println(sc.next());
-                            	 System.out.println("-----------------------------------------");
-                             }
-                       }
+							LinkedHashSet<Transaction> mytransactions = iWalletService.printTransactions(customer);
+							System.out.println("   Date       Time           Cr/Db    Amount"); 
+							Iterator<Transaction> iterator = mytransactions.iterator();
+							while (iterator.hasNext()) {
+								Transaction transaction = iterator.next();
+								System.out.println(
+										transaction.getDateOfTrans() +"     "+ transaction.getType() +"  "+ transaction.getAmount());
+								System.out.println("-----------------------------------------");
+							}
+						}
 
 					} catch (BankException bankException) {
 						System.out.println(bankException.getMessage());

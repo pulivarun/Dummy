@@ -2,9 +2,13 @@ package com.cg.WalletApplication.dao;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.util.LinkedHashSet;
+import java.util.Set;
+import java.util.TreeSet;
 
 import com.cg.WalletApplication.Exception.BankException;
 import com.cg.WalletApplication.bean.Customer;
+import com.cg.WalletApplication.bean.Transaction;
 
 public interface IWalletDao {
 
@@ -27,7 +31,7 @@ public interface IWalletDao {
 
 	boolean transfer(String senderMobile, String receiverMobile, BigDecimal amount) throws ClassNotFoundException, SQLException, BankException;
 
-	String printTransactions(Customer customer) throws ClassNotFoundException, SQLException;
+	LinkedHashSet<Transaction> printTransactions(Customer customer) throws ClassNotFoundException, SQLException;
 
 	
 

@@ -7,7 +7,11 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 @Embeddable
 public class Wallet implements Serializable{
-    @Column(name="Balance")
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1156737872192523305L;
+	@Column(name="Balance")
 	private BigDecimal balance;
 	
 	public Wallet() {

@@ -15,10 +15,12 @@ import javax.persistence.Table;
 @Entity
 @Table(name="Customer_Wallet12")
 public class Customer implements Serializable {
+	
+	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -246366219355621741L;
 	@Id
 	@Column(name="Mobile_No",length=10)
 	private String mobileNumber;
@@ -30,7 +32,7 @@ public class Customer implements Serializable {
 	private String EmailId;
 	@Embedded
 	private Wallet wallet ;
-	@OneToMany(mappedBy="customer",cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="customer",cascade=CascadeType.ALL,fetch=FetchType.EAGER)
 	private Set<Transaction> employees = new HashSet<Transaction>();		
 	
 /*	CREATE TABLE TRANSACTIONS

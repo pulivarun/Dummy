@@ -2,12 +2,16 @@ package com.cg.WalletApplication.service;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.util.LinkedHashSet;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.cg.WalletApplication.Exception.BankException;
 import com.cg.WalletApplication.Exception.IBankException;
 import com.cg.WalletApplication.bean.Customer;
+import com.cg.WalletApplication.bean.Transaction;
 import com.cg.WalletApplication.dao.IWalletDao;
 import com.cg.WalletApplication.dao.WalletDaoImpl;
 
@@ -130,11 +134,11 @@ public class WalletServiceImpl implements IWalletService {
 		return result;
 	}
 
-	public String printTransactions(Customer customer) throws ClassNotFoundException, SQLException {
+	public LinkedHashSet<Transaction> printTransactions(Customer customer) throws ClassNotFoundException, SQLException {
 		
-		iWalletDao.beginTransaction();
-	    String builder = iWalletDao.printTransactions(customer);
-		iWalletDao.commitTransaction();
+		
+	    LinkedHashSet<Transaction> builder = iWalletDao.printTransactions(customer);
+		
 		return builder;
 	}
 

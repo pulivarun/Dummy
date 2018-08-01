@@ -2,9 +2,11 @@ package com.cg.WalletApplication.service;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.util.LinkedHashSet;
 
 import com.cg.WalletApplication.Exception.BankException;
 import com.cg.WalletApplication.bean.Customer;
+import com.cg.WalletApplication.bean.Transaction;
 
 public interface IWalletService {
 
@@ -31,6 +33,6 @@ public interface IWalletService {
 
 	boolean transfer(String senderMobile, String receiverMobile, BigDecimal amount) throws InterruptedException, BankException, ClassNotFoundException, SQLException;
 
-	String printTransactions(Customer customer) throws ClassNotFoundException, SQLException;
+	LinkedHashSet<Transaction> printTransactions(Customer customer) throws ClassNotFoundException, SQLException;
 
 }

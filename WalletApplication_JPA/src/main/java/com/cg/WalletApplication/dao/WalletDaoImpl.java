@@ -1,16 +1,15 @@
 package com.cg.WalletApplication.dao;
 
 import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.persistence.EntityManager;
 
 import com.cg.WalletApplication.Exception.BankException;
-import com.cg.WalletApplication.Exception.IBankException;
 import com.cg.WalletApplication.bean.Customer;
 import com.cg.WalletApplication.bean.Transaction;
 
@@ -61,7 +60,7 @@ public void deposit(Customer customer, BigDecimal amount) throws SQLException, C
 	transaction.setMobile(customer.getMobileNumber());
 	customer.addEmployee(transaction);
 	ENTITY_MANAGER.merge(customer);	
-	ENTITY_MANAGER.persist(transaction);
+	//ENTITY_MANAGER.persist(transaction);
 	//ENTITY_MANAGER.persist(transaction);
 	/*Class.forName("oracle.jdbc.driver.OracleDriver");
 	Connection con=DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","system","Capgemini123");
@@ -122,7 +121,7 @@ public boolean withdraw(Customer customer, BigDecimal amount) throws ClassNotFou
 	transaction.setMobile(customer.getMobileNumber());
 	customer.addEmployee(transaction);
 	ENTITY_MANAGER.merge(customer);	
-	ENTITY_MANAGER.persist(transaction);
+	//ENTITY_MANAGER.persist(transaction);
 	//ENTITY_MANAGER.persist(transaction);
     	result=true;
 	}
@@ -147,8 +146,8 @@ public boolean transfer(String senderMobile, String receiverMobile, BigDecimal a
 	}
 	return result;
 }
-public String printTransactions(Customer customer) throws ClassNotFoundException, SQLException {
-	Class.forName("oracle.jdbc.driver.OracleDriver");
+public LinkedHashSet<Transaction> printTransactions(Customer customer) throws ClassNotFoundException, SQLException {
+/*	Class.forName("oracle.jdbc.driver.OracleDriver");
 	Connection con=DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","system","Capgemini123");
     String query = "Select * from transactions where Mobile_no = '"+customer.getMobileNumber()+"' order by id";
     PreparedStatement pstmt= con.prepareStatement(query);
@@ -159,7 +158,15 @@ public String printTransactions(Customer customer) throws ClassNotFoundException
     	builder.append(resultSet.getTimestamp("TIMESTAMPOFTRANS") + " " + resultSet.getString("TYPE")+ " " + resultSet.getBigDecimal("AMOUNT"));
     	builder.append(",");
     }
-	return builder.toString();
+	return builder.toString();*/
+	LinkedHashSet<Transaction> transac=new LinkedHashSet<Transaction>();
+	Set<Transaction> transaction=customer.getEmployees();
+	Iterator< Transaction> iterator=transaction.iterator();
+	while(iterator.hasNext())
+	{
+		transac.add(iterator.next());
+	}
+	return transac;
 }
 
 

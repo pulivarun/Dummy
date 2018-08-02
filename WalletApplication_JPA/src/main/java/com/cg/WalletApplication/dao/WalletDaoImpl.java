@@ -2,10 +2,7 @@ package com.cg.WalletApplication.dao;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.TreeSet;
 
 import javax.persistence.EntityManager;
 
@@ -52,13 +49,14 @@ public void deposit(Customer customer, BigDecimal amount) throws SQLException, C
 	Transaction transaction=new Transaction();
 	transaction.setAmount(amount);
 	transaction.setCustomer(customer);
+	transaction.setBalance(newAmount);
 	transaction.setType("Credited");
 	
 	 java.util.Date today = new java.util.Date();
 	 
 	transaction.setDateOfTrans( new java.sql.Timestamp(today.getTime()));
-	transaction.setMobile(customer.getMobileNumber());
-	customer.addEmployee(transaction);
+	
+	customer.addTransaction(transaction);
 	ENTITY_MANAGER.merge(customer);	
 	//ENTITY_MANAGER.persist(transaction);
 	//ENTITY_MANAGER.persist(transaction);
@@ -114,12 +112,12 @@ public boolean withdraw(Customer customer, BigDecimal amount) throws ClassNotFou
 	transaction.setAmount(amount);
 	transaction.setCustomer(customer);
 	transaction.setType("Debited");
-	
+	transaction.setBalance(newAmount);
 	 java.util.Date today = new java.util.Date();
 	 
 	transaction.setDateOfTrans( new java.sql.Timestamp(today.getTime()));
-	transaction.setMobile(customer.getMobileNumber());
-	customer.addEmployee(transaction);
+	
+	customer.addTransaction(transaction);
 	ENTITY_MANAGER.merge(customer);	
 	//ENTITY_MANAGER.persist(transaction);
 	//ENTITY_MANAGER.persist(transaction);
@@ -146,7 +144,7 @@ public boolean transfer(String senderMobile, String receiverMobile, BigDecimal a
 	}
 	return result;
 }
-public LinkedHashSet<Transaction> printTransactions(Customer customer) throws ClassNotFoundException, SQLException {
+public Set<Transaction> printTransactions(Customer customer) throws ClassNotFoundException, SQLException {
 /*	Class.forName("oracle.jdbc.driver.OracleDriver");
 	Connection con=DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","system","Capgemini123");
     String query = "Select * from transactions where Mobile_no = '"+customer.getMobileNumber()+"' order by id";
@@ -159,14 +157,14 @@ public LinkedHashSet<Transaction> printTransactions(Customer customer) throws Cl
     	builder.append(",");
     }
 	return builder.toString();*/
-	LinkedHashSet<Transaction> transac=new LinkedHashSet<Transaction>();
+	/*LinkedHashSet<Transaction> transac=new LinkedHashSet<Transaction>();
 	Set<Transaction> transaction=customer.getEmployees();
 	Iterator< Transaction> iterator=transaction.iterator();
 	while(iterator.hasNext())
 	{
 		transac.add(iterator.next());
-	}
-	return transac;
+	}*/
+	return customer.getTransactions();
 }
 
 

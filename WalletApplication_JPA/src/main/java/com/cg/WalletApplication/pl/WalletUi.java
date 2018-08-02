@@ -1,8 +1,11 @@
 package com.cg.WalletApplication.pl;
 
 import java.math.BigDecimal;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -12,7 +15,7 @@ import com.cg.WalletApplication.bean.Transaction;
 import com.cg.WalletApplication.service.IWalletService;
 import com.cg.WalletApplication.service.WalletServiceImpl;
 
-public class WalletUi {
+public class WalletUi  {
 
 	public static void main(String[] args) {
 		IWalletService iWalletService = new WalletServiceImpl();
@@ -156,14 +159,24 @@ public class WalletUi {
 						iWalletService.checkPassword(password);
 						Customer customer = iWalletService.check(mobileNum, password);
 						if (customer != null) {
-							LinkedHashSet<Transaction> mytransactions = iWalletService.printTransactions(customer);
-							System.out.println("   Date       Time           Cr/Db    Amount"); 
-							Iterator<Transaction> iterator = mytransactions.iterator();
+							Set<Transaction> mytransactions = iWalletService.printTransactions(customer);
+							List<Transaction> transac=new  LinkedList<Transaction>(mytransactions);
+							Collections.sort(transac,  new Comparator<Transaction>() {
+							   
+
+								public int compare(Transaction o1, Transaction o2) {
+									// TODO Auto-generated method stub
+									return o1.getDateOfTrans().compareTo(o2.getDateOfTrans());
+								}
+							});							
+						
+							System.out.println("   Date       Time           Cr/Db    Amount   Balance"); 
+							Iterator<Transaction> iterator = transac.iterator();
 							while (iterator.hasNext()) {
 								Transaction transaction = iterator.next();
 								System.out.println(
-										transaction.getDateOfTrans() +"     "+ transaction.getType() +"  "+ transaction.getAmount());
-								System.out.println("-----------------------------------------");
+										transaction.getDateOfTrans() +"     "+ transaction.getType() +"  "+ transaction.getAmount()+"   "+transaction.getBalance());
+								System.out.println("--------------------------------------------------------------");
 							}
 						}
 
@@ -185,5 +198,7 @@ public class WalletUi {
 			System.out.println(exception.getMessage());
 		}
 	}
+
+	
 
 }

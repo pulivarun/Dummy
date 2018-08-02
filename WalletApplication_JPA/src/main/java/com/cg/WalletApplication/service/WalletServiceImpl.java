@@ -2,9 +2,7 @@ package com.cg.WalletApplication.service;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
-import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -134,10 +132,10 @@ public class WalletServiceImpl implements IWalletService {
 		return result;
 	}
 
-	public LinkedHashSet<Transaction> printTransactions(Customer customer) throws ClassNotFoundException, SQLException {
+	public Set<Transaction> printTransactions(Customer customer) throws ClassNotFoundException, SQLException {
 		
 		
-	    LinkedHashSet<Transaction> builder = iWalletDao.printTransactions(customer);
+	    Set<Transaction> builder = iWalletDao.printTransactions(customer);
 		
 		return builder;
 	}
